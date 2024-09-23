@@ -14,7 +14,9 @@
             height: 100vh;
             margin: 0;
             padding: 0;
-            background-color: #ffffff;
+            background-color: #1c1c1c; /* Ciemne tło */
+            font-family: 'Consolas', monospace;
+            color: #ffffff; /* Biały kolor fontów */
         }
         .container {
             text-align: center;
@@ -26,7 +28,22 @@
         }
         button {
             width: 200px;
-            font-size: 1.5rem;
+            font-size: 1.1rem;
+            background-color: #ff6347; /* Niebieski kolor przycisku */
+            border: none; /* Usunięcie domyślnej ramki */
+            color: #ffffff; /* Biały kolor tekstu przycisku */
+            padding: 10px; /* Dodatkowe wyściółki */
+        }
+        /* Stylizacja input */
+        .form-control {
+            background-color: #2c2c2c; /* Ciemne tło dla inputa */
+            border: 2px solid #ffffff; /* Biała ramka */
+            color: #ffffff; /* Biały kolor tekstu */
+        }
+        .form-control:focus {
+            background-color: #2c2c2c; /* Tło po focusie */
+            border-color: #ffffff; /* Biała ramka po focusie */
+            box-shadow: none; /* Usuwa cień po focusie */
         }
     </style>
 </head>
@@ -35,9 +52,9 @@
         <h1 id="counter">0</h1>
         <div class="form-group col-md-2">
             <label for="inputValue">Wprowadź liczbę</label>
-            <input type="number" class="form-control" id="inputValue" placeholder="0" inputmode="numeric" pattern="[0-9]*">
+            <input type="tel" class="form-control" id="inputValue" placeholder="0" inputmode="numeric" pattern="[0-9]*">
         </div>
-        <button id="incrementBtn" class="btn btn-primary">Inkrementuj</button>
+        <button id="incrementBtn">Inkrementuj</button> <!-- Usunięcie klasy 'btn' -->
     </div>
     <script>
         // Inicjalizuje licznik z localStorage
