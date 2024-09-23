@@ -14,19 +14,29 @@
             height: 100vh;
             margin: 0;
             padding: 0;
-            background-color: #ffeccf;
+            background-color: #ffffff;
         }
         .container {
             text-align: center;
+            width: 100%;
+            max-width: 400px;
         }
         h1 {
-            font-size: 2rem;
+            font-size: 3rem;
+        }
+        button {
+            width: 200px;
+            font-size: 1.5rem;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1 id="counter">0</h1>
+        <div class="form-group col-md-2">
+            <label for="inputValue">Wprowadź liczbę</label>
+            <input type="number" class="form-control" id="inputValue" placeholder="0">
+        </div>
         <button id="incrementBtn" class="btn btn-primary">Inkrementuj</button>
     </div>
     <script>
@@ -41,8 +51,17 @@
         // Funkcja do inkrementacji licznika
         document.getElementById('incrementBtn').addEventListener('click', () => {
             counter++;
-            localStorage.setItem('counter', counter); // Zapisuje licznik w localStorage
+            localStorage.setItem('counter', counter);
             updateCounterDisplay();
+        });
+
+        // Funkcja do dodawania wartości z inputa
+        document.getElementById('inputValue').addEventListener('input', (event) => {
+            const inputValue = parseInt(event.target.value) || 0; // Pobiera wartość z inputa
+            counter += inputValue; // Dodaje wartość z inputa do licznika
+            localStorage.setItem('counter', counter);
+            updateCounterDisplay();
+            event.target.value = ''; // Czyści pole input po dodaniu
         });
 
         // Początkowe ustawienie wyświetlania licznika
