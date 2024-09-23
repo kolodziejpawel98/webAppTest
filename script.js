@@ -43,19 +43,26 @@ function updateSetColors() {
     }
 }
 
-function highlightScoreChange(currentPlayer) {
+function scoreChangeAnimation(currentPlayer, points) {
     const currentPlayerScore = document.getElementById(`${currentPlayer.toLowerCase()}-points`);
-    currentPlayerScore.classList.remove('highlight');
-    currentPlayerScore.classList.add('scoreUpdateAnimation');
-    setTimeout(() => {pointsElement.classList.remove('scoreUpdateAnimation');}, 500);
+    if(points > 0){
+        currentPlayerScore.classList.remove('scoreUpdateAnimation');
+        setTimeout(() => {
+            currentPlayerScore.classList.add('scoreUpdateAnimation');
+        }, 0);
+        setTimeout(() => {
+            currentPlayerScore.classList.remove('scoreUpdateAnimation');
+        }, 500);
+    }
 }
+
 
 document.getElementById('submitBtn').addEventListener('click', () => {
     const inputValue = parseInt(document.getElementById('inputValue').value) || 0;
 
     const currentPlayer = players[currentPlayerIndex];
     updatePoints(currentPlayer, inputValue);
-    highlightScoreChange(currentPlayer);
+    scoreChangeAnimation(currentPlayer, inputValue);
     changePlayer();
         
     document.getElementById('inputValue').value = '';
