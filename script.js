@@ -43,12 +43,21 @@ function updateSetColors() {
     }
 }
 
+function highlightScoreChange(currentPlayer) {
+    const currentPlayerScore = document.getElementById(`${currentPlayer.toLowerCase()}-points`);
+    currentPlayerScore.classList.remove('highlight');
+    currentPlayerScore.classList.add('scoreUpdateAnimation');
+    setTimeout(() => {pointsElement.classList.remove('scoreUpdateAnimation');}, 500);
+}
+
 document.getElementById('submitBtn').addEventListener('click', () => {
     const inputValue = parseInt(document.getElementById('inputValue').value) || 0;
 
     const currentPlayer = players[currentPlayerIndex];
     updatePoints(currentPlayer, inputValue);
-
+    highlightScoreChange(currentPlayer);
     changePlayer();
+        
     document.getElementById('inputValue').value = '';
 });
+
