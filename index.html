@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Licznik</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 id="counter">0</h1>
+        <button id="incrementBtn" class="btn btn-primary">Inkrementuj</button>
+    </div>
+    <script>
+        // Inicjalizuje licznik z localStorage
+        let counter = localStorage.getItem('counter') ? parseInt(localStorage.getItem('counter')) : 0;
+
+        // Funkcja do aktualizacji wyświetlania licznika
+        function updateCounterDisplay() {
+            document.getElementById('counter').textContent = counter;
+        }
+
+        // Funkcja do inkrementacji licznika
+        document.getElementById('incrementBtn').addEventListener('click', () => {
+            counter++;
+            localStorage.setItem('counter', counter); // Zapisuje licznik w localStorage
+            updateCounterDisplay();
+        });
+
+        // Początkowe ustawienie wyświetlania licznika
+        updateCounterDisplay();
+    </script>
+</body>
+</html>
