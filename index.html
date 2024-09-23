@@ -9,80 +9,179 @@
         body {
             display: flex;
             flex-direction: column;
-            justify-content: center;
+            justify-content: flex-start;
             align-items: center;
             height: 100vh;
             margin: 0;
             padding: 0;
-            background-color: #1c1c1c; /* Ciemne tło */
+            background-color: #1c1c1c;
             font-family: 'Consolas', monospace;
-            color: #ffffff; /* Biały kolor fontów */
+            color: #ffffff;
         }
-        .container {
+        .header {
             text-align: center;
             width: 100%;
+            margin-top: 10px;
+        }
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
             max-width: 400px;
+            flex-grow: 1;
         }
         h1 {
-            font-size: 3rem;
+            font-size: 2rem;
+            margin: 0;
+        }
+        hr {
+            width: 100%;
+            border: 1px dashed #ffffff;
+            margin: 5px 0;
+        }
+        h2 {
+            font-size: 1.5rem;
+            margin: 10px 0;
         }
         button {
             width: 200px;
             font-size: 1.1rem;
-            background-color: #ff6347; /* Niebieski kolor przycisku */
-            border: none; /* Usunięcie domyślnej ramki */
-            color: #ffffff; /* Biały kolor tekstu przycisku */
-            padding: 10px; /* Dodatkowe wyściółki */
+            background-color: #007bff;
+            border: none;
+            color: #ffffff;
+            padding: 10px;
         }
         /* Stylizacja input */
         .form-control {
-            background-color: #2c2c2c; /* Ciemne tło dla inputa */
-            border: 2px solid #ffffff; /* Biała ramka */
-            color: #ffffff; /* Biały kolor tekstu */
+            background-color: #2c2c2c;
+            border: 2px dashed #ffffff;
+            color: #ffffff;
         }
         .form-control:focus {
-            background-color: #2c2c2c; /* Tło po focusie */
-            border-color: #ffffff; /* Biała ramka po focusie */
-            box-shadow: none; /* Usuwa cień po focusie */
+            background-color: #2c2c2c;
+            border-color: #ffffff;
+            box-shadow: none;
+        }
+        table {
+            width: 100%;
+            max-width: 400px;
+            border-collapse: collapse;
+            margin-top: 20px;
+            text-align: center;
+        }
+        th, td {
+            border: 2px solid #ffffff;
+            padding: 10px;
+            font-size: 1.2rem;
+        }
+        th {
+            font-weight: bold;
+        }
+        .highlight {
+            color: yellow;
         }
     </style>
 </head>
 <body>
+    <div class="header">
+        <h1>darts score table</h1>
+        <hr>
+    </div>
     <div class="container">
-        <h1 id="counter">0</h1>
+        <h2 id="starter">Kto zaczynał: Pablo</h2>
+
+        <!-- Tabela -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Imię</th>
+                    <th>Sety</th>
+                    <th>Punkty</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Pablo</td>
+                    <td id="pabloSety">0</td>
+                    <td id="pabloPunkty">501</td>
+                </tr>
+                <tr>
+                    <td>Marian</td>
+                    <td id="marianSety">0</td>
+                    <td id="marianPunkty">501</td>
+                </tr>
+            </tbody>
+        </table>
+
         <div class="form-group col-md-2">
             <label for="inputValue">Wprowadź liczbę</label>
             <input type="tel" class="form-control" id="inputValue" placeholder="0" inputmode="numeric" pattern="[0-9]*">
         </div>
-        <button id="incrementBtn">Inkrementuj</button> <!-- Usunięcie klasy 'btn' -->
+        <button id="incrementBtn">OK</button>
     </div>
     <script>
-        // Inicjalizuje licznik z localStorage
-        let counter = localStorage.getItem('counter') ? parseInt(localStorage.getItem('counter')) : 0;
+        const players = ["Pablo", "Marian"];
+        let currentPlayerIndex = 0;
 
-        // Funkcja do aktualizacji wyświetlania licznika
-        function updateCounterDisplay() {
-            document.getElementById('counter').textContent = counter;
+        // Funkcja do zmiany gracza
+        function changePlayer() {
+            currentPlayerIndex = (currentPlayerIndex + 1) % players.length;
+            document.getElementById('starter').textContent = `Kto zaczynał: ${players[currentPlayerIndex]}`;
         }
 
-        // Funkcja do inkrementacji licznika
+        // Funkcja do aktualizacji punktów gracza
+        function updatePoints(player, points) {
+            const playerPoints = document.getElementById(`${player.toLowerCase()}Punkty`);
+            const playerSety = document.getElementById(`${player.toLowerCase()}Sety`);
+            let currentPoints = parseInt(playerPoints.textContent);
+
+            // Zmniejszanie punktów
+            currentPoints -= points;
+
+            // Jeśli punkty spadają poniżej 0, zwiększ sety i zresetuj punkty na 501
+            if (currentPoints < 0) {
+                currentPoints = 501;
+                playerSety.textContent = parseInt(playerSety.textContent) + 1;
+            }
+
+            playerPoints.textContent = currentPoints;
+
+            // Aktualizacja kolorów setów
+            updateSetColors();
+        }
+
+        // Funkcja do porównania setów i zmiany koloru
+        function updateSetColors() {
+            const pabloSety = parseInt(document.getElementById('pabloSety').textContent);
+            const marianSety = parseInt(document.getElementById('marianSety').textContent);
+
+            const pabloSetyElement = document.getElementById('pabloSety');
+            const marianSetyElement = document.getElementById('marianSety');
+
+            // Reset kolorów
+            pabloSetyElement.classList.remove('highlight');
+            marianSetyElement.classList.remove('highlight');
+
+            if (pabloSety > marianSety) {
+                pabloSetyElement.classList.add('highlight');
+            } else if (marianSety > pabloSety) {
+                marianSetyElement.classList.add('highlight');
+            }
+        }
+
+        // Funkcja do inkrementacji punktów
         document.getElementById('incrementBtn').addEventListener('click', () => {
-            counter++;
-            localStorage.setItem('counter', counter);
-            updateCounterDisplay();
-        });
+            const inputValue = parseInt(document.getElementById('inputValue').value) || 0; // Pobiera wartość z inputa
 
-        // Funkcja do dodawania wartości z inputa
-        document.getElementById('inputValue').addEventListener('input', (event) => {
-            const inputValue = parseInt(event.target.value) || 0; // Pobiera wartość z inputa
-            counter += inputValue; // Dodaje wartość z inputa do licznika
-            localStorage.setItem('counter', counter);
-            updateCounterDisplay();
-            event.target.value = ''; // Czyści pole input po dodaniu
-        });
+            // Zmniejsz punkty odpowiedniego gracza
+            const currentPlayer = players[currentPlayerIndex];
+            updatePoints(currentPlayer, inputValue);
 
-        // Początkowe ustawienie wyświetlania licznika
-        updateCounterDisplay();
+            changePlayer(); // Zmiana gracza po każdym kliknięciu
+            document.getElementById('inputValue').value = ''; // Czyści pole input po dodaniu
+        });
     </script>
 </body>
 </html>
