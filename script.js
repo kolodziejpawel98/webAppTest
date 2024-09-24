@@ -2,12 +2,25 @@ const players = ["Pablo", "Marian"];
 let currentPlayerIndex = 0;
 
 function changePlayer() {
+    const pabloElement = document.getElementById('pablo-name');
+    const marianElement = document.getElementById('marian-name');
+    
+
+    pabloElement.classList.remove('inactive-name-color');
+    marianElement.classList.remove('inactive-name-color');
+    
+    if (currentPlayerIndex === 0) {
+        pabloElement.classList.add('inactive-name-color');
+    } else {
+        marianElement.classList.add('inactive-name-color');
+    }
+
+
     if(currentPlayerIndex == 0){
         currentPlayerIndex = 1;
     }else{
         currentPlayerIndex = 0;
     }
-    document.getElementById('currentPlayer').textContent = `Kto zaczynał: ${players[currentPlayerIndex]}`;
 }
 
 function updatePoints(player, points) {
@@ -19,10 +32,12 @@ function updatePoints(player, points) {
     if (currentPoints <= 0) {
         currentPoints = 501;
         playerSety.textContent = parseInt(playerSety.textContent) + 1;
+        setsChangeAnimation(player);
+        document.getElementById(`pablo-points`).textContent = currentPoints;
+        document.getElementById(`marian-points`).textContent = currentPoints;
     }
 
     playerPoints.textContent = currentPoints;
-
     updateSetColors();
 }
 
@@ -56,6 +71,16 @@ function scoreChangeAnimation(currentPlayer, points) {
     }
 }
 
+function setsChangeAnimation(currentPlayer) {
+    const currentPlayerSets = document.getElementById(`${currentPlayer.toLowerCase()}-sets`);
+        currentPlayerSets.classList.remove('scoreUpdateAnimation');
+        setTimeout(() => {
+            currentPlayerSets.classList.add('scoreUpdateAnimation');
+        }, 0);
+        setTimeout(() => {
+            currentPlayerSets.classList.remove('scoreUpdateAnimation');
+        }, 500);
+}
 
 document.getElementById('submitBtn').addEventListener('click', () => {
     const inputValue = parseInt(document.getElementById('inputValue').value) || 0;
