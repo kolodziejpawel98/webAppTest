@@ -1,6 +1,22 @@
 const players = ["Pablo", "Marian"];
 let currentPlayerIndex = 0;
 
+if (localStorage.getItem('pabloSets') === null) {
+    localStorage.setItem('pabloSets', 0);
+}
+
+if (localStorage.getItem('marianSets') === null) {
+    localStorage.setItem('marianSets', 0);
+}
+
+if (localStorage.getItem('pabloPoints') === null) {
+    localStorage.setItem('pabloPoints', 501);
+}
+
+if (localStorage.getItem('marianPoints') === null) {
+    localStorage.setItem('marianPoints', 501);
+}
+
 function changePlayer() {
     const pabloElement = document.getElementById('pablo-name');
     const marianElement = document.getElementById('marian-name');
@@ -18,27 +34,33 @@ function changePlayer() {
 
     if(currentPlayerIndex == 0){
         currentPlayerIndex = 1;
-    }else{
+    }else{let marianPoints = 
         currentPlayerIndex = 0;
     }
 }
 
-function updatePoints(player, points) {
-    const playerPoints = document.getElementById(`${player.toLowerCase()}-points`);
-    const playerSety = document.getElementById(`${player.toLowerCase()}-sets`);
-    let currentPoints = parseInt(playerPoints.textContent);
-    currentPoints -= points;
+function updatePoints(currentPlayerIndex, points) {
+    const currentPlayerPointsText = document.getElementById(`${players[currentPlayerIndex].toLowerCase()}-points`);
+    const currentPlayerSetsText = document.getElementById(`${players[currentPlayerIndex].toLowerCase()}-sets`);
+    
+    let currentPlayerPoints = localStorage.getItem(`${players[currentPlayerIndex].toLowerCase()}Points`);
+    let currentPlayerSets = localStorage.getItem(`${players[currentPlayerIndex].toLowerCase()}Sets`);
 
-    if (currentPoints <= 0) {
-        currentPoints = 501;
-        playerSety.textContent = parseInt(playerSety.textContent) + 1;
-        setsChangeAnimation(player);
-        document.getElementById(`pablo-points`).textContent = currentPoints;
-        document.getElementById(`marian-points`).textContent = currentPoints;
+    currentPlayerPoints -= points;
+    
+    if (currentPlayerPoints <= 0) {
+        currentPlayerPoints = 501;
+        currentPlayerSets++;
+        currentPlayerSetsText.textContent = currentPlayerSetsText;
+        // setsChangeAnimation(player);
+        document.getElementById(`pablo-points`).textContent = 501;
+        document.getElementById(`marian-points`).textContent = 501;
     }
 
-    playerPoints.textContent = currentPoints;
-    updateSetColors();
+    currentPlayerPointsText.textContent = currentPlayerPoints;
+    localStorage.setItem(`${players[currentPlayerIndex].toLowerCase()}Points`, currentPlayerPoints);
+    localStorage.setItem(`${players[currentPlayerIndex].toLowerCase()}Sets`, currentPlayerSets);
+    // updateSetColors();
 }
 
 function updateSetColors() {
@@ -82,14 +104,45 @@ function setsChangeAnimation(currentPlayer) {
         }, 500);
 }
 
+function saveDataToLocalStorage(){
+    let pabloCurrentSets = localStorage.getItem('pabloCurrentSets');
+    let marianCurrentSets = localStorage.getItem('marianCurrentSets');
+    let pabloCurrentPoints = localStorage.getItem('pabloCurrentPoints');
+    let marianCurrentPoints = localStorage.getItem('marianCurrentPoints');
+
+
+    pabloCurrentSets = 21;
+   
+   localStorage.setItem('user', pabloCurrentSets);
+
+}
+
 document.getElementById('submitBtn').addEventListener('click', () => {
     const inputValue = parseInt(document.getElementById('inputValue').value) || 0;
 
-    const currentPlayer = players[currentPlayerIndex];
-    updatePoints(currentPlayer, inputValue);
-    scoreChangeAnimation(currentPlayer, inputValue);
-    changePlayer();
-        
-    document.getElementById('inputValue').value = '';
+    // const currentPlayer = players[currentPlayerIndex];
+    updatePoints(currentPlayerIndex, inputValue);
+    // scoreChangeAnimation(currentPlayer, inputValue);
+    // changePlayer();
+    // saveDataToLocalStorage();
+    // document.getElementById('inputValue').value = '';
 });
 
+
+document.getElementById('resetBtn').addEventListener('click', () => {
+        localStorage.setItem('pabloSets', 0);
+        localStorage.setItem('marianSets', 0);
+        localStorage.setItem('pabloPoints', 501);
+        localStorage.setItem('marianPoints', 501);    
+        document.getElementById('pablo-points').textContent = localStorage.getItem('pabloPoints');
+        document.getElementById('marian-points').textContent = localStorage.getItem('marianPoints');
+        document.getElementById('pablo-sets').textContent = localStorage.getItem('pabloSets');
+        document.getElementById('marian-sets').textContent = localStorage.getItem('marianSets');
+});
+
+window.onload = () => {
+    document.getElementById('pablo-points').textContent = localStorage.getItem('pabloPoints');
+    document.getElementById('marian-points').textContent = localStorage.getItem('marianPoints');
+    document.getElementById('pablo-sets').textContent = localStorage.getItem('pabloSets');
+    document.getElementById('marian-sets').textContent = localStorage.getItem('marianSets');
+};
