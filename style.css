@@ -95,6 +95,11 @@ th, td {
     background-color: #ff8839;
 }
 
+.danger-button-custom {
+    margin-top: 300px;
+    width: 120px;
+}
+
 .highlight {
     color: rgb(255, 208, 0);
 }
