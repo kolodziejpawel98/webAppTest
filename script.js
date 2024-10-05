@@ -105,13 +105,11 @@ function setsChangeAnimation(currentPlayer) {
 }
 
 document.getElementById('submitBtn').addEventListener('click', () => {
-    const inputValue = parseInt(document.getElementById('inputValue').value) || 0;
-
-    // const currentPlayer = players[currentPlayerIndex];
-    updatePoints(currentPlayerIndex, inputValue);
-    scoreChangeAnimation(currentPlayerIndex, inputValue);
+    const pointsInputValue = parseInt(document.getElementById('points-input').value) || 0;
+    updatePoints(currentPlayerIndex, pointsInputValue);
+    scoreChangeAnimation(currentPlayerIndex, pointsInputValue);
     changePlayer();
-    document.getElementById('inputValue').value = '';
+    document.getElementById('points-input').value = '';
 });
 
 
